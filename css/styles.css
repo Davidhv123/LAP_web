@@ -117,7 +117,7 @@ body {
 /* Cuadrícula de 2 columnas para Shop */
 .shop-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 14px;
     width: 100%;
 }
@@ -150,7 +150,7 @@ body {
 /* Contenedor cuadrado para la imagen */
 .product-img-wrap {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 2 / 1;
     overflow: hidden;
     background-color: #f1f5f9;
 }
