@@ -1,0 +1,406 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: rgb(0, 86, 152);
+    color: #ffffff;
+    /* Bloqueo estricto a vista móvil centrada */
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 70vh;
+    overflow: hidden;
+    z-index: 1; /* Nivel base para que el contenido pase por encima */
+}
+
+/* Capa de difuminado progresivo hacia el fondo negro */
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 86, 152, 0) 0%,
+        rgba(0, 86, 152, 0.4) 40%,
+        rgba(0, 86, 152, 0.85) 75%,
+        rgb(0, 86, 152) 100%
+    );
+    pointer-events: none;
+}
+
+.header-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    will-change: transform, opacity;
+    transition: transform 0.1s ease-out, opacity 0.1s ease-out;
+    /* La máscara ahora mantiene el 100% visible hasta el 80% de la imagen */
+    -webkit-mask-image: linear-gradient(to bottom, rgb(0, 86, 152) 80%, transparent 100%);
+    mask-image: linear-gradient(to bottom, rgb(0, 86, 152) 80%, transparent 100%);
+}
+
+/* Espacio de prueba para poder hacer scroll */
+.content-placeholder {
+    position: relative;
+    z-index: 15;
+    /* Degradado transparente para que no corte la imagen con ninguna línea recta */
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 86, 152, 0) 0%,
+        rgb(0, 86, 152) 140px,
+        rgb(0, 86, 152) 100%
+    );
+    min-height: 150vh;
+    padding: 20px;
+    margin-top: -80px;
+}
+
+/* Envoltorio que unifica todo el contenido para que suba al mismo ritmo */
+/* Contenedor base de cada pestaña */
+/* Contenedor base de pestañas */
+.tab-content {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Pestaña visible */
+.tab-content.active {
+    display: flex;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Animación cuando entra Links (desde la izquierda) */
+.tab-content.enter-from-left {
+    display: flex;
+    opacity: 0;
+    transform: translateX(-40px);
+}
+
+/* Animación cuando entra Shop (desde la derecha) */
+.tab-content.enter-from-right {
+    display: flex;
+    opacity: 0;
+    transform: translateX(40px);
+}
+
+/* Animación cuando sale hacia la izquierda */
+.tab-content.exit-to-left {
+    opacity: 0;
+    transform: translateX(-40px);
+}
+
+/* Animación cuando sale hacia la derecha */
+.tab-content.exit-to-right {
+    opacity: 0;
+    transform: translateX(40px);
+}
+/* Cuadrícula de 2 columnas para Shop */
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+}
+
+/* Tarjeta de Producto con la misma física que los links */
+.product-card {
+    background-color: #fefce8;
+    border-radius: 20px;
+    border: 1.5px solid #0f172a;
+    box-shadow: 0 4px 0 #0f172a;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: #0f172a;
+    transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.product-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #0f172a;
+}
+
+.product-card:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #0f172a;
+}
+
+/* Contenedor cuadrado para la imagen */
+.product-img-wrap {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Textos del producto */
+.product-info {
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.product-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 4px;
+    color: #0f172a;
+}
+
+.product-price {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.product-dots {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-left: 4px;
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 25;
+    margin-top: -110px;
+    margin-bottom: 24px;
+}
+
+.profile-logo {
+    width: 250px;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.4));
+}
+
+/* Texto descriptivo */
+/* Texto descriptivo más pegado al logo */
+.profile-tagline {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.3px;
+    margin-top: -70px; /* Ajusta este valor (-10px o -14px si lo quieres aún más pegado) */
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Insignia de verificado */
+.badge-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: rgba(255, 255, 255, 0.12); /* Tono azul translúcido sutilmente contrastado */
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(4px);
+    padding: 4px 12px;
+    border-radius: 999px; /* Bordes redondeados modernos */
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.badge-icon {
+    width: 13px;
+    height: 13px;
+    stroke: #38bdf8; /* Tono celeste luminoso para el check */
+}
+
+/* Contenedor del conmutador estilo píldora */
+.tab-switch {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 999px;
+    padding: 4px;
+    width: 210px;
+    margin: 18px auto 24px auto; /* Centrado horizontal automático */
+    user-select: none;
+}
+
+/* Pastilla blanca base (empieza exactamente a la izquierda sobre Links) */
+.tab-indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background-color: #ffffff;
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    transform: translateX(0); /* Posición inicial: Links */
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+}
+
+/* Cuando se activa Shop, la pastilla se traslada a la derecha */
+.tab-switch.shop-active .tab-indicator {
+    transform: translateX(100%);
+}
+
+.tab-btn {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 8px 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.85);
+    transition: color 0.2s ease;
+    outline: none;
+}
+
+/* El texto dentro de la pastilla activa se vuelve oscuro para contrastar */
+.tab-btn.active {
+    color: #0f172a;
+}
+
+/* El botón activo cambia su texto a color oscuro para contrastar con el blanco */
+.tab-btn.active {
+    color: #111827;
+}
+
+/* Manejo de visibilidad de las pestañas Links y Shop */
+.tab-content {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+}
+
+.tab-content.active {
+    display: flex;
+}
+
+/* Tarjeta / Botón de Linktree */
+/* Tarjeta / Botón de Linktree con física 3D */
+.link-card {
+    display: flex;
+    align-items: center;
+    background-color: #fefce8;
+    color: #0f172a;
+    text-decoration: none;
+    padding: 8px 14px 8px 8px;
+    border-radius: 999px;
+    border: 1.5px solid #0f172a;
+    box-shadow: 0 4px 0 #0f172a; /* Elevación base */
+    transform: translateY(0);
+    transition: transform 0.07s ease-out, box-shadow 0.07s ease-out;
+    user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent; /* Quita el destello azul por defecto en móviles */
+}
+
+/* Hover: El botón se levanta hacia arriba y la sombra crece */
+.link-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #0f172a;
+}
+
+/* Clic / Toque: El botón se hunde por completo y la sombra se aplasta */
+.link-card:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 #0f172a;
+    transition: transform 0.06s ease-in, box-shadow 0.06s ease-in;
+}
+
+/* Círculo miniatura para el icono a la izquierda */
+.link-thumb {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #1e293b;
+}
+
+.link-thumb svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Personalización de colores sutiles para los círculos */
+.youtube-thumb {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.instagram-thumb {
+    background-color: #fce7f3;
+    color: #db2777;
+}
+
+.shop-thumb {
+    background-color: #e0f2fe;
+    color: #0284c7;
+}
+
+/* Texto del enlace */
+.link-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.98rem;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+}
+
+/* Botón de 3 puntos a la derecha */
+.link-more {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.link-more svg {
+    width: 16px;
+    height: 16px;
+}
