@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -248,7 +249,7 @@ body {
     align-items: center;
     background-color: rgba(0, 0, 0, 0.35);
     border-radius: 999px;
-    padding: 4px;
+    padding: 10px;
     width: 210px;
     margin: 18px auto 24px auto; /* Centrado horizontal automático */
     user-select: none;
